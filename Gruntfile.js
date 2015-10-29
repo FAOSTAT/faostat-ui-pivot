@@ -20,7 +20,7 @@
             uglify: {
                 dist: {
                     files: {
-                        'src/js/start.js': ['<%= concat.dist.dest %>']
+                        'dist/js/jbPivot.js': ['<%= concat.dist.dest %>']
                     }
                 }
             }
