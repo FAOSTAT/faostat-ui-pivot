@@ -1,4 +1,4 @@
-/*global define, document*/
+/*global define, document, window, alert*/
 define(['jquery'], function ($) {
 
     'use strict';
@@ -17,7 +17,7 @@ define(['jquery'], function ($) {
 
     }
 
-    PIVOTEXPORTER.prototype.excel = function () {
+    PIVOTEXPORTER.prototype.excel = function (metadata) {
         var model = this.create_model(),
             csv_string = this.create_csv_string(model),
             that = this;
@@ -27,14 +27,13 @@ define(['jquery'], function ($) {
             data: {
                 csv: csv_string,
                 filename: this.CONFIG.filename,
-                metadata: '"Datasource", "FAOSTAT"\n"Domain Name", "Production, Crops"\n"Retrieved", ' + new Date()
+                metadata: metadata !== null ? metadata : '"Datasource", "FAOSTAT"\n"Domain Name", "Production, Crops"\n"Retrieved", ' + new Date()
             },
             success: function (response) {
-                console.debug(response);
                 window.open(that.CONFIG.url_output + response, '_blank');
             },
             error: function (e) {
-                console.debug(e);
+                alert('PIVOTEXPORTER.prototype.excel ' + e);
             }
         });
     };
@@ -95,7 +94,7 @@ define(['jquery'], function ($) {
         /* Collect X dimension. */
         for (x = 1; x <= this.count_xs(this.CONFIG.placeholder_id); x += 1) {
             left_titles = [];
-            left_titles_objs = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.lefttitle.targetx' + x);
+            left_titles_objs = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.lefttitle.targetX' + x);
             for (i = 0; i < left_titles_objs.length; i += 1) {
                 tmp = $(left_titles_objs[i]).html().trim();
                 tmp = tmp.substring(tmp.indexOf('</a>'));
@@ -215,7 +214,7 @@ define(['jquery'], function ($) {
     PIVOTEXPORTER.prototype.count_xs = function () {
         var tmp, i;
         for (i = 1; i < 100; i += 1) {
-            tmp = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.lefttitle.targetx' + i);
+            tmp = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.lefttitle.targetX' + i);
             if (tmp.length === 0) {
                 return (i - 1);
             }
@@ -225,7 +224,7 @@ define(['jquery'], function ($) {
     PIVOTEXPORTER.prototype.count_ys = function () {
         var tmp, i;
         for (i = 1; i < 100; i += 1) {
-            tmp = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.toptitle.targety' + i);
+            tmp = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.toptitle.targetY' + i);
             if (tmp.length === 0) {
                 return (i - 1);
             }
