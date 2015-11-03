@@ -1,5 +1,5 @@
 /*global define, document, window, alert*/
-define(['jquery'], function ($) {
+define(['jquery', 'swal'], function ($, swal) {
 
     'use strict';
 
@@ -30,7 +30,9 @@ define(['jquery'], function ($) {
                 metadata: metadata !== null ? metadata : '"Datasource", "FAOSTAT"\n"Domain Name", "Production, Crops"\n"Retrieved", ' + new Date()
             },
             success: function (response) {
-                window.open(that.CONFIG.url_output + response, '_blank');
+                if (window.open(that.CONFIG.url_output + response, '_blank') === undefined) {
+                    swal('Warning', 'Your browser is blocking pop-up windows. Please change your browser settings and try again.', 'warning');
+                }
             },
             error: function (e) {
                 alert('PIVOTEXPORTER.prototype.excel ' + e);
@@ -185,7 +187,7 @@ define(['jquery'], function ($) {
         s += '\n';
 
         /* Create body. */
-        for (j = 0; j < model.values.length - 2; j += 1) {
+        for (j = 0; j < model.values.length - 1; j += 1) {
             for (z = 0; z < model.xs.length; z += 1) {
                 newrow = 1;
                 for (p = (1 + z); p < model.xs.length; p += 1) {
