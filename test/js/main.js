@@ -21,11 +21,15 @@ require(['jquery', 'pivot_exporter'], function ($, PivotExporter) {
 
     var PE = new PivotExporter({
         placeholder_id: 'downloadOutputArea',
-        filename: 'Crops.csv'
+        filename: 'Crops'
     });
 
     $('#csv_button').click({PE: PE}, function (e) {
         e.data.PE.csv();
+    });
+
+    $('#excel_button').click({PE: PE}, function (e) {
+        e.data.PE.excel();
     });
 
 });

@@ -7,13 +7,37 @@ define(['jquery'], function ($) {
 
         this.CONFIG = {
             placeholder_id: 'placeholder',
-            filename: 'PivotExport.csv'
+            filename: 'PivotExport',
+            url_csv2excel: 'http://localhost:8080/api/v1.0/csv2excel/',
+            url_output: 'http://localhost:8080/api/excel/'
         };
 
         /* Extend default configuration. */
         this.CONFIG = $.extend(true, {}, this.CONFIG, config);
 
     }
+
+    PIVOTEXPORTER.prototype.excel = function () {
+        var model = this.create_model(),
+            csv_string = this.create_csv_string(model),
+            that = this;
+        $.ajax({
+            type: 'POST',
+            url: this.CONFIG.url_csv2excel,
+            data: {
+                csv: csv_string,
+                filename: this.CONFIG.filename,
+                metadata: '"Datasource", "FAOSTAT"\n"Domain Name", "Production, Crops"\n"Retrieved", ' + new Date()
+            },
+            success: function (response) {
+                console.debug(that.CONFIG.url_output + response);
+                window.open(that.CONFIG.url_output + response, '_blank');
+            },
+            error: function (e) {
+                console.debug(e);
+            }
+        });
+    };
 
     PIVOTEXPORTER.prototype.csv = function () {
         var model = this.create_model(this.CONFIG.placeholder_id),
