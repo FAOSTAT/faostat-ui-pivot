@@ -9,7 +9,7 @@ define(['jquery'], function ($) {
             placeholder_id: 'placeholder',
             filename: 'PivotExport',
             url_csv2excel: 'http://localhost:8080/api/v1.0/csv2excel/',
-            url_output: 'http://localhost:8080/api/excel/'
+            url_output: 'http://localhost:8080/api/v1.0/excels/'
         };
 
         /* Extend default configuration. */
@@ -30,7 +30,7 @@ define(['jquery'], function ($) {
                 metadata: '"Datasource", "FAOSTAT"\n"Domain Name", "Production, Crops"\n"Retrieved", ' + new Date()
             },
             success: function (response) {
-                console.debug(that.CONFIG.url_output + response);
+                console.debug(response);
                 window.open(that.CONFIG.url_output + response, '_blank');
             },
             error: function (e) {
