@@ -59,7 +59,8 @@ define(['jquery',
             zfields = [],
             interval,
             key,
-            lbl;
+            lbl,
+            original;
 
         /* Map codes. */
         this.map_codes();
@@ -155,6 +156,25 @@ define(['jquery',
                 }
                 /* Hide unused fields. */
                 $('.unused_fields').css('display', 'none');
+                /* Get table titles. */
+                var titles = $('.toptitle');
+                for (i = 0; i < titles.length; i += 1) {
+                    original =  $(titles[i]).text().replace(/-/g, '');
+                    key = original.replace(/\s/g, '_');
+                    lbl = that.CONFIG.label2code_map[key];
+                    if (lbl !== undefined && lbl.toString().length > 0) {
+                        $(titles[i]).text(original + ' [' + lbl + ']');
+                    }
+                }
+                titles = $('.lefttitle');
+                for (i = 0; i < titles.length; i += 1) {
+                    original =  $(titles[i]).text().replace(/-/g, '');
+                    key = original.replace(/\s/g, '_');
+                    lbl = that.CONFIG.label2code_map[key];
+                    if (lbl !== undefined && lbl.toString().length > 0) {
+                        $(titles[i]).text(original + ' [' + lbl + ']');
+                    }
+                }
             }, 500);
         }
 
