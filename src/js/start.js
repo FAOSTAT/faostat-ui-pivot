@@ -22,7 +22,8 @@ define(['jquery',
             dsd: null,
             label2code_map: null,
             show_flags: true,
-            show_codes: true
+            show_codes: true,
+            show_units: true
 
         };
 
@@ -60,7 +61,7 @@ define(['jquery',
             interval,
             key,
             lbl,
-            original;
+            selector;
 
         /* Map codes. */
         this.map_codes();
@@ -120,6 +121,10 @@ define(['jquery',
                         if (this.CONFIG.show_flags) {
                             zfields.push(this.CONFIG.dsd[i].label);
                         }
+                    } else if (this.CONFIG.dsd[i].type === 'unit') {
+                        if (this.CONFIG.show_units) {
+                            zfields.push(this.CONFIG.dsd[i].label);
+                        }
                     } else {
                         zfields.push(this.CONFIG.dsd[i].label);
                     }
@@ -154,10 +159,11 @@ define(['jquery',
                     if (that.CONFIG.show_codes) {
                         for (i = 0; i < Object.keys(that.CONFIG.label2code_map).length; i += 1) {
                             key = Object.keys(that.CONFIG.label2code_map)[i].toString().replace(/\s/g, '_').replace(/,/g, '');
-                            if ($('.' + key) !== undefined) {
+                            selector = $('.' + key);
+                            if (selector !== undefined) {
                                 lbl = that.CONFIG.label2code_map[key];
                                 if (lbl.length > 0) {
-                                    $('.' + key).html(' [' + lbl + ']');
+                                    selector.html(' [' + lbl + ']');
                                 }
                             }
                         }
