@@ -581,22 +581,22 @@ $(function() {
 
          var S = "";
 
-         S += "<table border='0px' cellspacing='0' cellpadding='0' class='unused_fields'><tr><th class='unused_field dropable targetU0' rel='U,0'>" + this.options.l_unused_fields + "</th>";
-
-         for (i = 0; i < this.ufields.length; i++) {
-            S += "<tr><td draggable='true'";
-            cls = "unused_field draggable dropable";
-            cls += " targetU" + (i + 1);
-
-            S += " class=\"" + cls + "\"";
-
-            S += " rel= 'U," + (i + 1) + "'";
-
-            S += ">";
-            S += this.fieldLabels[this.ufields[i]];
-            S += "</td></tr>";
-         }
-         S += "</table>";
+         //S += "<table border='0px' cellspacing='0' cellpadding='0' class='unused_fields'><tr><th class='unused_field dropable targetU0' rel='U,0'>" + this.options.l_unused_fields + "</th>";
+         //
+         //for (i = 0; i < this.ufields.length; i++) {
+         //   S += "<tr><td draggable='true'";
+         //   cls = "unused_field draggable dropable";
+         //   cls += " targetU" + (i + 1);
+         //
+         //   S += " class=\"" + cls + "\"";
+         //
+         //   S += " rel= 'U," + (i + 1) + "'";
+         //
+         //   S += ">";
+         //   S += this.fieldLabels[this.ufields[i]];
+         //   S += "</td></tr>";
+         //}
+         //S += "</table>";
 
 
          S += "<table border=\"0px\" cellspacing=\"0\" cellpadding=\"0\" class=\"pivot\">";

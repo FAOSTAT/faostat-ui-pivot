@@ -151,7 +151,7 @@ define(['jquery',
                 html = $('#pivot_placeholder').html();
                 if (html !== undefined) {
                     clearInterval(interval);
-                    $('.unused_fields').css('display', 'none');
+                    //$('.unused_fields').css('display', 'none');
                     if (that.CONFIG.show_codes) {
                         for (i = 0; i < Object.keys(that.CONFIG.label2code_map).length; i += 1) {
                             key = Object.keys(that.CONFIG.label2code_map)[i].toString().replace(/\s/g, '_').replace(/,/g, '');
