@@ -145,20 +145,19 @@ define(['jquery',
             label2code_map: this.CONFIG.label2code_map
         });
 
-        /* Add codes, if required. */
+        /* Add flag codes, if required. */
         if (this.CONFIG.show_codes) {
             interval = setInterval(function () {
                 html = $('#pivot_placeholder').html();
                 if (html !== undefined) {
                     clearInterval(interval);
-                    //$('.unused_fields').css('display', 'none');
                     if (that.CONFIG.show_codes) {
                         for (i = 0; i < Object.keys(that.CONFIG.label2code_map).length; i += 1) {
                             key = Object.keys(that.CONFIG.label2code_map)[i].toString().replace(/\s/g, '_').replace(/,/g, '');
-                            if ($('#' + key) !== undefined) {
+                            if ($('.' + key) !== undefined) {
                                 lbl = that.CONFIG.label2code_map[key];
                                 if (lbl.length > 0) {
-                                    $('#' + key).html(' [' + lbl + ']');
+                                    $('.' + key).html(' [' + lbl + ']');
                                 }
                             }
                         }
@@ -205,7 +204,7 @@ define(['jquery',
     };
 
     PIVOT.prototype.pivot_flag_formatter = function (V) {
-        return V + '<span id="' + V.toString().replace(/\s/g, '_').replace(/,/g, '') + '"></span>';
+        return V + '<span class="' + V.toString().replace(/\s/g, '_').replace(/,/g, '') + '"></span>';
     };
 
     PIVOT.prototype.map_codes = function () {
