@@ -128,6 +128,11 @@ define(['jquery',
             }
         }
 
+        /* Add codes in the table, if required. */
+        if (this.CONFIG.show_codes) {
+            this.add_codes();
+        }
+
         /* Render pivot table. */
         $('#pivot_placeholder').jbPivot({
             fields: fields,
@@ -146,38 +151,49 @@ define(['jquery',
                 html = $('#pivot_placeholder').html();
                 if (html !== undefined) {
                     clearInterval(interval);
-                    for (i = 0; i < Object.keys(that.CONFIG.label2code_map).length; i += 1) {
-                        key = Object.keys(that.CONFIG.label2code_map)[i];
-                        lbl = that.CONFIG.label2code_map[key];
-                        if (lbl.length > 0) {
-                            $('#' + key).html(' [' + lbl + ']');
+                    $('.unused_fields').css('display', 'none');
+                    if (that.CONFIG.show_codes) {
+                        for (i = 0; i < Object.keys(that.CONFIG.label2code_map).length; i += 1) {
+                            key = Object.keys(that.CONFIG.label2code_map)[i].toString().replace(/\s/g, '_').replace(/,/g, '');
+                            if ($('#' + key) !== undefined) {
+                                lbl = that.CONFIG.label2code_map[key];
+                                if (lbl.length > 0) {
+                                    $('#' + key).html(' [' + lbl + ']');
+                                }
+                            }
                         }
-                    }
-                }
-                /* Hide unused fields. */
-                $('.unused_fields').css('display', 'none');
-                /* Get table titles. */
-                var titles = $('.toptitle');
-                for (i = 0; i < titles.length; i += 1) {
-                    original =  $(titles[i]).text().replace(/-/g, '');
-                    key = original.replace(/\s/g, '_');
-                    lbl = that.CONFIG.label2code_map[key];
-                    if (lbl !== undefined && lbl.toString().length > 0) {
-                        $(titles[i]).text(original + ' [' + lbl + ']');
-                    }
-                }
-                titles = $('.lefttitle');
-                for (i = 0; i < titles.length; i += 1) {
-                    original =  $(titles[i]).text().replace(/-/g, '');
-                    key = original.replace(/\s/g, '_');
-                    lbl = that.CONFIG.label2code_map[key];
-                    if (lbl !== undefined && lbl.toString().length > 0) {
-                        $(titles[i]).text(original + ' [' + lbl + ']');
                     }
                 }
             }, 500);
         }
 
+    };
+
+    PIVOT.prototype.add_codes = function () {
+        var label_indices = this.get_label_columns(),
+            i,
+            j,
+            label,
+            code;
+        for (i = 0; i < this.CONFIG.data.length; i += 1) {
+            for (j = 0; j < label_indices.length; j += 1) {
+                label = this.CONFIG.data[i][label_indices[j]];
+                code = this.CONFIG.label2code_map[label];
+                if (code !== undefined) {
+                    this.CONFIG.data[i][label_indices[j]] = label + ' [' + code + ']';
+                }
+            }
+        }
+    };
+
+    PIVOT.prototype.get_label_columns = function () {
+        var out = [], i;
+        for (i = 0; i < this.CONFIG.dsd.length; i += 1) {
+            if (this.CONFIG.dsd[i].type === 'label') {
+                out.push(this.CONFIG.dsd[i].key);
+            }
+        }
+        return out;
     };
 
     PIVOT.prototype.pivot_value_formatter = function (V) {
@@ -189,7 +205,7 @@ define(['jquery',
     };
 
     PIVOT.prototype.pivot_flag_formatter = function (V) {
-        return V + '<span id="' + V.toString().replace(/\s/g, '_') + '"></span>';
+        return V + '<span id="' + V.toString().replace(/\s/g, '_').replace(/,/g, '') + '"></span>';
     };
 
     PIVOT.prototype.map_codes = function () {
@@ -246,11 +262,12 @@ define(['jquery',
             for (j = 0; j < Object.keys(header_codelabel_map).length; j += 1) {
                 code_idx = header_codelabel_map[Object.keys(header_codelabel_map)[j]].code;
                 label_idx = header_codelabel_map[Object.keys(header_codelabel_map)[j]].label;
-                map[this.CONFIG.data[i][label_idx].replace(/\s/g, '_')] = this.CONFIG.data[i][code_idx];
+                map[this.CONFIG.data[i][label_idx].replace(/\s/g, '_').replace(/,/g, '')] = this.CONFIG.data[i][code_idx];
             }
         }
 
         /* Store the map. */
+        console.debug(map);
         this.CONFIG.label2code_map = map;
 
     };
