@@ -178,7 +178,7 @@ define(['jquery',
         for (i = 0; i < this.CONFIG.data.length; i += 1) {
             for (j = 0; j < label_indices.length; j += 1) {
                 label = this.CONFIG.data[i][label_indices[j]];
-                code = this.CONFIG.label2code_map[label];
+                code = this.CONFIG.label2code_map[label.replace(/\s/g, '_').replace(/,/g, '')];
                 if (code !== undefined) {
                     this.CONFIG.data[i][label_indices[j]] = label + ' [' + code + ']';
                 }
@@ -267,7 +267,6 @@ define(['jquery',
         }
 
         /* Store the map. */
-        console.debug(map);
         this.CONFIG.label2code_map = map;
 
     };
