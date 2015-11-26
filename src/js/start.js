@@ -277,7 +277,7 @@ define(['jquery',
     };
 
     PIVOT.prototype.dispose = function () {
-
+        $('#pivot_placeholder').empty();
     };
 
     return PIVOT;
