@@ -276,6 +276,10 @@ define(['jquery',
 
     };
 
+    PIVOT.prototype.dispose = function () {
+
+    };
+
     return PIVOT;
 
 });
