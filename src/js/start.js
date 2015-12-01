@@ -158,7 +158,7 @@ define(['jquery',
                     clearInterval(interval);
                     if (that.CONFIG.show_codes) {
                         for (i = 0; i < Object.keys(that.CONFIG.label2code_map).length; i += 1) {
-                            key = Object.keys(that.CONFIG.label2code_map)[i].toString().replace(/\s/g, '_').replace(/,/g, '');
+                            key = Object.keys(that.CONFIG.label2code_map)[i].toString().replace(/\s/g, '_').replace(/,/g, '').replace(/\(|\)/g, '').replace(/'/g, '');
                             selector = $('.' + key);
                             if (selector !== undefined) {
                                 lbl = that.CONFIG.label2code_map[key];
@@ -183,7 +183,7 @@ define(['jquery',
         for (i = 0; i < this.CONFIG.data.length; i += 1) {
             for (j = 0; j < label_indices.length; j += 1) {
                 label = this.CONFIG.data[i][label_indices[j]];
-                code = this.CONFIG.label2code_map[label.replace(/\s/g, '_').replace(/,/g, '')];
+                code = this.CONFIG.label2code_map[label.replace(/\s/g, '_').replace(/,/g, '').replace(/\(|\)/g, '').replace(/'/g, '')];
                 if (code !== undefined) {
                     this.CONFIG.data[i][label_indices[j]] = label + ' [' + code + ']';
                 }
@@ -210,7 +210,11 @@ define(['jquery',
     };
 
     PIVOT.prototype.pivot_flag_formatter = function (V) {
-        return V + '<span class="' + V.toString().replace(/\s/g, '_').replace(/,/g, '') + '"></span>';
+        try {
+            return V + '<span class="' + V.toString().replace(/\s/g, '_').replace(/,/g, '').replace(/\(|\)/g, '').replace(/'/g, '') + '"></span>';
+        } catch (e) {
+            return V;
+        }
     };
 
     PIVOT.prototype.map_codes = function () {
@@ -267,7 +271,7 @@ define(['jquery',
             for (j = 0; j < Object.keys(header_codelabel_map).length; j += 1) {
                 code_idx = header_codelabel_map[Object.keys(header_codelabel_map)[j]].code;
                 label_idx = header_codelabel_map[Object.keys(header_codelabel_map)[j]].label;
-                map[this.CONFIG.data[i][label_idx].replace(/\s/g, '_').replace(/,/g, '')] = this.CONFIG.data[i][code_idx];
+                map[this.CONFIG.data[i][label_idx].replace(/\s/g, '_').replace(/,/g, '').replace(/\(|\)/g, '').replace(/'/g, '')] = this.CONFIG.data[i][code_idx];
             }
         }
 
