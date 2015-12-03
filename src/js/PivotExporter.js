@@ -79,7 +79,7 @@ define(['jquery', 'swal'], function ($, swal) {
             top_titles_objs = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.toptitle.targetY' + y);
             for (i = 0; i < top_titles_objs.length; i += 1) {
                 if ($.inArray($(top_titles_objs[i]).html().trim(), top_titles) < 0) {
-                    top_titles.push($(top_titles_objs[i]).html().trim());
+                    top_titles.push(this.remove_html($(top_titles_objs[i]).html().trim()));
                 }
             }
             ys.push(top_titles);
@@ -89,7 +89,7 @@ define(['jquery', 'swal'], function ($, swal) {
         z_titles_objs = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.ztitle');
         for (i = 0; i < z_titles_objs.length; i += 1) {
             if ($.inArray($(z_titles_objs[i]).html().trim(), z_titles) < 0) {
-                z_titles.push($(z_titles_objs[i]).html().trim());
+                z_titles.push(this.remove_html($(z_titles_objs[i]).html().trim()));
             }
         }
 
@@ -117,7 +117,7 @@ define(['jquery', 'swal'], function ($, swal) {
         tmp = [];
         newrow = top_titles.length * z_titles.length;
         for (i = 0; i < tds.length; i += 1) {
-            tmp.push($(tds[i]).html().trim());
+            tmp.push(this.remove_html($(tds[i]).html().trim()));
             if (count % newrow === 0) {
                 values.push(tmp);
                 tmp = [];
@@ -128,7 +128,7 @@ define(['jquery', 'swal'], function ($, swal) {
         /* Collect summary. */
         summary_objs = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr td.summary');
         for (i = 0; i < summary_objs.length; i += 1) {
-            summary.push($(summary_objs[i]).html().trim());
+            summary.push(this.remove_html($(summary_objs[i]).html().trim()));
         }
 
         /* Return model. */
@@ -140,6 +140,12 @@ define(['jquery', 'swal'], function ($, swal) {
             zs: z_titles
         };
 
+    };
+
+    PIVOTEXPORTER.prototype.remove_html = function (html) {
+        var tmp = document.createElement('DIV');
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || '';
     };
 
     PIVOTEXPORTER.prototype.create_csv_string = function (model) {
