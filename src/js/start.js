@@ -2,12 +2,10 @@
 define(['jquery',
         'handlebars',
         'text!faostat_ui_pivot/html/templates.hbs',
-        'i18n!faostat_ui_pivot/nls/translate',
-        'faostat_commons',
         'bootstrap',
         'sweetAlert',
         'amplify',
-        'jbPivot'], function ($, Handlebars, templates, translate, FAOSTATCommons) {
+        'jbPivot'], function ($, Handlebars, templates) {
 
     'use strict';
 
@@ -36,9 +34,6 @@ define(['jquery',
 
         /* Fix the language, if needed. */
         this.CONFIG.lang = this.CONFIG.lang !== null ? this.CONFIG.lang : 'en';
-
-        /* Store FAOSTAT language. */
-        this.CONFIG.lang_faostat = FAOSTATCommons.iso2faostat(this.CONFIG.lang);
 
         /* Render. */
         this.render();
