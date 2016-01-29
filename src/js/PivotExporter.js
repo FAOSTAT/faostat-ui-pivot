@@ -15,6 +15,12 @@ define(['jquery', 'swal'], function ($, swal) {
         /* Extend default configuration. */
         this.CONFIG = $.extend(true, {}, this.CONFIG, config);
 
+        if (this.CONFIG.hasOwnProperty('container')) {
+            this.$CONTAINER = $(this.CONFIG.container);
+        }else {
+            this.$CONTAINER = $('#' + this.CONFIG.placeholder_id);
+        }
+
     }
 
     PIVOTEXPORTER.prototype.excel = function (metadata) {
@@ -41,7 +47,7 @@ define(['jquery', 'swal'], function ($, swal) {
     };
 
     PIVOTEXPORTER.prototype.csv = function () {
-        var model = this.create_model(this.CONFIG.placeholder_id),
+        var model = this.create_model(),
             csv_string = this.create_csv_string(model),
             csvContent = 'data:text/csv;charset=utf-8,' + csv_string,
             encodedUri = encodeURI(csvContent),
@@ -74,9 +80,9 @@ define(['jquery', 'swal'], function ($, swal) {
             summary_objs;
 
         /* Collect Y dimension. */
-        for (y = 1; y <= this.count_ys(this.CONFIG.placeholder_id); y += 1) {
+        for (y = 1; y <= this.count_ys(); y += 1) {
             top_titles = [];
-            top_titles_objs = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.toptitle.targetY' + y);
+            top_titles_objs = this.$CONTAINER.find('table.pivot tbody tr th.draggable.toptitle.targetY' + y);
             for (i = 0; i < top_titles_objs.length; i += 1) {
                 if ($.inArray($(top_titles_objs[i]).html().trim(), top_titles) < 0) {
                     top_titles.push(this.remove_html($(top_titles_objs[i]).html().trim()));
@@ -86,7 +92,7 @@ define(['jquery', 'swal'], function ($, swal) {
         }
 
         /* Collect Z dimension. */
-        z_titles_objs = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.ztitle');
+        z_titles_objs = this.$CONTAINER.find('table.pivot tbody tr th.draggable.ztitle');
         for (i = 0; i < z_titles_objs.length; i += 1) {
             if ($.inArray($(z_titles_objs[i]).html().trim(), z_titles) < 0) {
                 z_titles.push(this.remove_html($(z_titles_objs[i]).html().trim()));
@@ -94,9 +100,9 @@ define(['jquery', 'swal'], function ($, swal) {
         }
 
         /* Collect X dimension. */
-        for (x = 1; x <= this.count_xs(this.CONFIG.placeholder_id); x += 1) {
+        for (x = 1; x <= this.count_xs(); x += 1) {
             left_titles = [];
-            left_titles_objs = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.lefttitle.targetX' + x);
+            left_titles_objs = this.$CONTAINER.find('table.pivot tbody tr th.draggable.lefttitle.targetX' + x);
             for (i = 0; i < left_titles_objs.length; i += 1) {
                 tmp = $(left_titles_objs[i]).html().trim();
                 tmp = tmp.substring(tmp.indexOf('</a>'));
@@ -112,7 +118,7 @@ define(['jquery', 'swal'], function ($, swal) {
         }
 
         /* Collect values. */
-        tds = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr td');
+        tds = this.$CONTAINER.find('table.pivot tbody tr td');
         count = 1;
         tmp = [];
         newrow = top_titles.length * z_titles.length;
@@ -126,7 +132,7 @@ define(['jquery', 'swal'], function ($, swal) {
         }
 
         /* Collect summary. */
-        summary_objs = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr td.summary');
+        summary_objs = this.$CONTAINER.find('table.pivot tbody tr td.summary');
         for (i = 0; i < summary_objs.length; i += 1) {
             summary.push(this.remove_html($(summary_objs[i]).html().trim()));
         }
@@ -222,7 +228,7 @@ define(['jquery', 'swal'], function ($, swal) {
     PIVOTEXPORTER.prototype.count_xs = function () {
         var tmp, i;
         for (i = 1; i < 100; i += 1) {
-            tmp = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.lefttitle.targetX' + i);
+            tmp = this.$CONTAINER.find('table.pivot tbody tr th.draggable.lefttitle.targetX' + i);
             if (tmp.length === 0) {
                 return (i - 1);
             }
@@ -232,7 +238,7 @@ define(['jquery', 'swal'], function ($, swal) {
     PIVOTEXPORTER.prototype.count_ys = function () {
         var tmp, i;
         for (i = 1; i < 100; i += 1) {
-            tmp = $('#' + this.CONFIG.placeholder_id + ' table.pivot tbody tr th.draggable.toptitle.targetY' + i);
+            tmp = this.$CONTAINER.find('table.pivot tbody tr th.draggable.toptitle.targetY' + i);
             if (tmp.length === 0) {
                 return (i - 1);
             }

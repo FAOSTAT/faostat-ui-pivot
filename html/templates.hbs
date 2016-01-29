@@ -3,7 +3,8 @@
             {{preview_label}}
         </h1>
         <div class="fs-table-holder">
-            <div id='pivot_placeholder' class="bootstrap-content-box-reset">
+            <div id='pivot_placeholder' data-role="pivot"
+                {{#if render}}style="display:none;"{{else}}style=";"{{/if}} class="bootstrap-content-box-reset">
 
             </div>
         </div>

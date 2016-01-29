@@ -21,7 +21,8 @@ define(['jquery',
             label2code_map: null,
             show_flags: true,
             show_codes: true,
-            show_units: true
+            show_units: true,
+            render: true
 
         };
 
@@ -66,7 +67,16 @@ define(['jquery',
         template = Handlebars.compile(source);
         dynamic_data = {};
         html = template(dynamic_data);
-        $('#' + this.CONFIG.placeholder_id).html(html);
+
+        // switch
+        if (this.CONFIG.hasOwnProperty('container')) {
+            this.$CONTAINER = $(this.CONFIG.container);
+        }
+        else if (this.CONFIG.hasOwnProperty('placeholder_id')) {
+            this.$CONTAINER = $('#' + this.CONFIG.placeholder_id);
+        }
+        this.$CONTAINER.html(html);
+
 
         /* Configure the pivot according to the DB settings. */
         for (i = 0; i < this.CONFIG.dsd.length; i += 1) {
@@ -276,7 +286,7 @@ define(['jquery',
     };
 
     PIVOT.prototype.dispose = function () {
-        $('#pivot_placeholder').empty();
+        this.$CONTAINER().empty();
     };
 
     return PIVOT;
