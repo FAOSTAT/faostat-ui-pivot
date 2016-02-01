@@ -1,10 +1,10 @@
 <script type='text/x-handlebars-template' id='faostat_ui_pivot_structure'>
         <h1>
-            {{preview_label}}
+            <!--{{preview_label}}-->
         </h1>
         <div class="fs-table-holder">
             <div id='pivot_placeholder' data-role="pivot"
-                {{#if render}}style="display:none;"{{else}}style=";"{{/if}} class="bootstrap-content-box-reset">
+                {{#if this.render}}{{else}}style="display:none;"{{/if}} class="bootstrap-content-box-reset">
 
             </div>
         </div>

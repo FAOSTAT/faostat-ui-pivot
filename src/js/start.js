@@ -65,7 +65,9 @@ define(['jquery',
         /* Load main structure. */
         source = $(templates).filter('#faostat_ui_pivot_structure').html();
         template = Handlebars.compile(source);
-        dynamic_data = {};
+        dynamic_data = {
+            render: this.CONFIG.render
+        };
         html = template(dynamic_data);
 
         // switch
