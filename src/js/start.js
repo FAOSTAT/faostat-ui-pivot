@@ -1,11 +1,12 @@
 /*global define, setInterval, clearInterval*/
 define(['jquery',
+        'loglevel',
         'handlebars',
         'text!faostat_ui_pivot/html/templates.hbs',
         'bootstrap',
         'sweetAlert',
         'amplify',
-        'jbPivot'], function ($, Handlebars, templates) {
+        'jbPivot'], function ($, log, Handlebars, templates) {
 
     'use strict';
 
@@ -43,6 +44,8 @@ define(['jquery',
 
     PIVOT.prototype.render = function () {
 
+        log.info('Pivot.start; render');
+
         /* Variables. */
         var source,
             template,
@@ -62,6 +65,8 @@ define(['jquery',
         /* Map codes. */
         this.map_codes();
 
+        log.info('Pivot.start; map_codes_ended');
+
         /* Load main structure. */
         source = $(templates).filter('#faostat_ui_pivot_structure').html();
         template = Handlebars.compile(source);
@@ -80,14 +85,19 @@ define(['jquery',
         this.$CONTAINER.html(html);
 
 
+        log.info('Pivot.start; rendered template');
+
+
         /* Configure the pivot according to the DB settings. */
         for (i = 0; i < this.CONFIG.dsd.length; i += 1) {
+            log.info('Pivot.start; dsd', i, this.CONFIG.dsd[i]);
             switch (this.CONFIG.dsd[i].type) {
             case 'code':
                 break;
             case 'flag':
                 break;
             case 'value':
+                log.info('Pivot.start; ', this.CONFIG.dsd[i].label);
                 fields[this.CONFIG.dsd[i].label] = {
                     field: this.CONFIG.dsd[i].label,
                     sort: 'asc',
@@ -182,6 +192,7 @@ define(['jquery',
     };
 
     PIVOT.prototype.add_codes = function () {
+        log.info('Pivot.start; add_codes');
         var label_indices = this.get_label_columns(),
             i,
             j,
@@ -199,6 +210,7 @@ define(['jquery',
     };
 
     PIVOT.prototype.get_label_columns = function () {
+        log.info('Pivot.start; get_label_columns');
         var out = [], i;
         for (i = 0; i < this.CONFIG.dsd.length; i += 1) {
             if (this.CONFIG.dsd[i].type === 'label') {
@@ -278,7 +290,13 @@ define(['jquery',
             for (j = 0; j < Object.keys(header_codelabel_map).length; j += 1) {
                 code_idx = header_codelabel_map[Object.keys(header_codelabel_map)[j]].code;
                 label_idx = header_codelabel_map[Object.keys(header_codelabel_map)[j]].label;
-                map[this.CONFIG.data[i][label_idx].replace(/\s/g, '_').replace(/,/g, '').replace(/\(|\)/g, '').replace(/'/g, '')] = this.CONFIG.data[i][code_idx];
+                // TODO: should be a test on string?
+                //log.info('Pivot.start; this.CONFIG.data[i][label_idx], this.CONFIG.data[i][code_idx]);
+                if (this.CONFIG.data[i][label_idx] !== undefined && this.CONFIG.data[i][label_idx] !== null) {
+                    map[this.CONFIG.data[i][label_idx].replace(/\s/g, '_').replace(/,/g, '').replace(/\(|\)/g, '').replace(/'/g, '')] = this.CONFIG.data[i][code_idx];
+                }else{
+                    log.warn('TODO: something here? ', this.CONFIG.data[i][label_idx], this.CONFIG.data[i][code_idx]);
+                }
             }
         }
 
