@@ -1,5 +1,5 @@
 /*global define, document, window, alert*/
-define(['jquery', 'loglevel', 'swal'], function ($, log, swal) {
+define(['jquery', 'loglevel', 'swal', 'FileSaver'], function ($, log, swal) {
 
     'use strict';
 
@@ -47,14 +47,38 @@ define(['jquery', 'loglevel', 'swal'], function ($, log, swal) {
     };
 
     PIVOTEXPORTER.prototype.csv = function () {
-        var model = this.create_model(),
+
+        // TODO: FIX IT
+/*        var model = this.create_model(),
             csv_string = this.create_csv_string(model),
             csvContent = 'data:text/csv;charset=utf-8,' + csv_string,
             encodedUri = encodeURI(csvContent),
             link = document.createElement('a');
         link.setAttribute('href', encodedUri);
         link.setAttribute('download', this.CONFIG.filename);
-        link.click();
+        link.click();*/
+
+        var start = new Date();
+
+        var model = this.create_model(),
+            csv_string = this.create_csv_string(model);
+
+        // TODO: check if it works in all browser. There should be an issue with Sfari 8.0
+
+        // TODO: fix name of the filename
+        var blob = new Blob([csv_string], {type: "data:application/csv;charset=utf-8;"}),
+            d = new Date(),
+            filename = "FAOSTAT_Export_" + (d.getMonth() + 1) + '-' + d.getDate() + '-' + d.getFullYear() + '.csv';
+
+        log.info('EXPORT.saveAs;');
+
+        saveAs(blob, filename);
+
+        var time = new Date();
+
+        log.info("Export.saveAs; Execution saveAs time: ", (time - start) / 1000 + "s");
+
+
     };
 
     PIVOTEXPORTER.prototype.create_model = function () {
