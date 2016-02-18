@@ -1,5 +1,5 @@
 /*global define, document, window, alert*/
-define(['jquery', 'swal'], function ($, swal) {
+define(['jquery', 'loglevel', 'swal'], function ($, log, swal) {
 
     'use strict';
 
@@ -156,6 +156,8 @@ define(['jquery', 'swal'], function ($, swal) {
 
     PIVOTEXPORTER.prototype.create_csv_string = function (model) {
 
+        log.info(model);
+
         var s = '',
             i,
             j,
@@ -173,6 +175,7 @@ define(['jquery', 'swal'], function ($, swal) {
             y = model.ys[i];
             for (j = 0; j < y.length; j += 1) {
                 for (z = 0; z < model.zs.length; z += 1) {
+                    log.info(y[j]);
                     s += '"' + y[j] + '",';
                 }
             }
@@ -186,6 +189,7 @@ define(['jquery', 'swal'], function ($, swal) {
             y = model.ys[i];
             for (z = 0; z < y.length; z += 1) {
                 for (j = 0; j < model.zs.length; j += 1) {
+                    log.info(model.zs[j]);
                     s += '"' + model.zs[j] + '"';
                     if (j < model.zs.length - 1) {
                         s += ',';
@@ -208,12 +212,14 @@ define(['jquery', 'swal'], function ($, swal) {
                 s += '"' + model.xs[z][parseInt(j / newrow, 10) % model.xs[z].length] + '",';
             }
             for (i = 0; i < model.values[j].length; i += 1) {
-                value = parseFloat(model.values[j][i]);
+                // TODO: remove it!
+                /*value = parseFloat(model.values[j][i]);
                 if (!isNaN(value)) {
                     s += '"' + value + '"';
                 } else {
                     s += '"' + model.values[j][i] + '"';
-                }
+                }*/
+                s += '"' + model.values[j][i] + '"';
                 if (i < model.values[j].length - 1) {
                     s += ',';
                 }

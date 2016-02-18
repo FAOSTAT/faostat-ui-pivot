@@ -3,10 +3,11 @@ define(['jquery',
         'loglevel',
         'handlebars',
         'text!faostat_ui_pivot/html/templates.hbs',
+        'underscore',
         'bootstrap',
-        'sweetAlert',
+        'numeral',
         'amplify',
-        'jbPivot'], function ($, log, Handlebars, templates) {
+        'jbPivot'], function ($, log, Handlebars, templates, _) {
 
     'use strict';
 
@@ -23,7 +24,11 @@ define(['jquery',
             show_flags: true,
             show_codes: true,
             show_units: true,
-            render: true
+            render: true,
+
+            decimal_places: 2,
+            decimal_separator: '.',
+            thousand_separator: ','
 
         };
 
@@ -60,12 +65,31 @@ define(['jquery',
             interval,
             key,
             lbl,
-            selector;
+            selector,
+            thousands = this.CONFIG.thousand_separator,
+            decimal = this.CONFIG.decimal_separator,
+            decimal_places =  this.CONFIG.decimal_places
+
 
         /* Map codes. */
         this.map_codes();
 
         log.info('Pivot.start; map_codes_ended');
+
+        // Prepare the value formatter.
+        numeral.language('faostat', {
+            delimiters: {
+                thousands: thousands,
+                decimal: decimal
+            }
+        });
+        this.CONFIG.formatter = '0' + thousands + '0' + decimal;
+
+        numeral.language('faostat');
+
+        for (var i = 0; i < decimal_places; i += 1) {
+            this.CONFIG.formatter += '0';
+        }
 
         /* Load main structure. */
         source = $(templates).filter('#faostat_ui_pivot_structure').html();
@@ -104,7 +128,7 @@ define(['jquery',
                     showAll: true,
                     aggregateType: 'average',
                     groupType: 'none',
-                    formatter: this.pivot_value_formatter
+                    formatter: _.bind(this.pivot_value_formatter, this)
                 };
                 break;
             case 'flag_label':
@@ -223,7 +247,11 @@ define(['jquery',
     PIVOT.prototype.pivot_value_formatter = function (V) {
         var res = null;
         if (typeof V === 'number') {
-            res = V.toFixed(2);
+            log.info(V);
+            //res = V.toFixed(2);
+            log.info(this.CONFIG)
+            log.info(this.CONFIG.formatter)
+            res = numeral(parseFloat(V)).format(this.CONFIG.formatter);
         }
         return res;
     };
