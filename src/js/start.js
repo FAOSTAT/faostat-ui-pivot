@@ -246,6 +246,7 @@ define(['jquery',
 
     PIVOT.prototype.pivot_value_formatter = function (V) {
         var res = null;
+        // TODO: this should be performed on the DSD model?
         if (typeof V === 'number') {
             log.info(V);
             //res = V.toFixed(2);
