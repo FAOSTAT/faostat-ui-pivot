@@ -1,5 +1,5 @@
 /*global define, document, window, alert*/
-define(['jquery', 'loglevel', 'swal', 'FileSaver'], function ($, log, swal) {
+define(['jquery', 'loglevel', 'swal', 'underscore.string', 'FileSaver'], function ($, log, swal, S) {
 
     'use strict';
 
@@ -130,9 +130,11 @@ define(['jquery', 'loglevel', 'swal', 'FileSaver'], function ($, log, swal) {
             for (i = 0; i < left_titles_objs.length; i += 1) {
                 tmp = $(left_titles_objs[i]).html().trim();
                 tmp = tmp.substring(tmp.indexOf('</a>'));
-                if (tmp.startsWith('</a>')) {
+
+                if (S.startsWith(tmp, '</a>')) {
                     tmp = tmp.substring(tmp.indexOf('</a>') + '</a>'.length);
                 }
+
                 tmp = tmp.replace(/\n/g, ' ');
                 if ($.inArray(tmp, left_titles) < 0) {
                     left_titles.push(tmp);
