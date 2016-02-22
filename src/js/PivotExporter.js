@@ -1,5 +1,5 @@
 /*global define, document, window, alert*/
-define(['jquery', 'loglevel', 'swal', 'underscore.string', 'FileSaver'], function ($, log, swal, S) {
+define(['jquery', 'loglevel', 'swal', 'underscore.string', 'FileSaver'], function ($, log, swal, _s) {
 
     'use strict';
 
@@ -131,7 +131,7 @@ define(['jquery', 'loglevel', 'swal', 'underscore.string', 'FileSaver'], functio
                 tmp = $(left_titles_objs[i]).html().trim();
                 tmp = tmp.substring(tmp.indexOf('</a>'));
 
-                if (S.startsWith(tmp, '</a>')) {
+                if (_s.startsWith(tmp, '</a>')) {
                     tmp = tmp.substring(tmp.indexOf('</a>') + '</a>'.length);
                 }
 
@@ -201,8 +201,8 @@ define(['jquery', 'loglevel', 'swal', 'underscore.string', 'FileSaver'], functio
             y = model.ys[i];
             for (j = 0; j < y.length; j += 1) {
                 for (z = 0; z < model.zs.length; z += 1) {
-                    log.info(y[j]);
-                    s += '"' + y[j] + '",';
+                    log.info("TRIM");
+                    s += '"' + _s.trim(y[j], "-") + '",';
                 }
             }
             s = s.substring(0, s.length - 1);
@@ -215,8 +215,8 @@ define(['jquery', 'loglevel', 'swal', 'underscore.string', 'FileSaver'], functio
             y = model.ys[i];
             for (z = 0; z < y.length; z += 1) {
                 for (j = 0; j < model.zs.length; j += 1) {
-                    log.info(model.zs[j]);
-                    s += '"' + model.zs[j] + '"';
+                    //s += '"' + model.zs[j] + '"';
+                    s += '"' + _s.trim(model.zs[j], "-") + '"';
                     if (j < model.zs.length - 1) {
                         s += ',';
                     }
@@ -245,7 +245,9 @@ define(['jquery', 'loglevel', 'swal', 'underscore.string', 'FileSaver'], functio
                 } else {
                     s += '"' + model.values[j][i] + '"';
                 }*/
-                s += '"' + model.values[j][i] + '"';
+
+                //s += '"' + model.values[j][i] + '"';
+                s += '"' + _s.trim(model.values[j][i], "-") + '"';
                 if (i < model.values[j].length - 1) {
                     s += ',';
                 }
