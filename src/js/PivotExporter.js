@@ -183,7 +183,7 @@ define([
 
         // remove "-all" columns
         matrix = matrix.map(function(val, index){
-            return val.slice(1, val.length-1);
+            return val.slice(1, val.length);
         });
 
         // remove first "-all" row
