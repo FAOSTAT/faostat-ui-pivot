@@ -1,4 +1,4 @@
-/*global define, setInterval, clearInterval*/
+/*global define, setInterval, clearInterval, numeral*/
 define(['jquery',
         'loglevel',
         'handlebars',
@@ -179,6 +179,13 @@ define(['jquery',
             this.add_codes();
         }
 
+        log.info("label2code_map", this.CONFIG.label2code_map);
+        log.info("data", this.CONFIG.data);
+        log.info("fields", fields);
+        log.info("yfields", yfields);
+        log.info("xfields", xfields);
+        log.info("zfields", zfields);
+
         /* Render pivot table. */
         $('#pivot_placeholder').jbPivot({
             fields: fields,
@@ -250,8 +257,7 @@ define(['jquery',
         if (typeof V === 'number') {
             log.info(V);
             //res = V.toFixed(2);
-            log.info(this.CONFIG)
-            log.info(this.CONFIG.formatter)
+            log.info(this.CONFIG, this.CONFIG.formatter);
             res = numeral(parseFloat(V)).format(this.CONFIG.formatter);
         }
         return res;
