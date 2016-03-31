@@ -74,7 +74,7 @@ define(['jquery',
         /* Map codes. */
         this.map_codes();
 
-        log.info('Pivot.start; map_codes_ended');
+        //log.info('Pivot.start; map_codes_ended');
 
         // Prepare the value formatter.
         numeral.language('faostat', {
@@ -255,9 +255,9 @@ define(['jquery',
         var res = null;
         // TODO: this should be performed on the DSD model?
         if (typeof V === 'number') {
-            log.info(V);
+            //log.info(V);
             //res = V.toFixed(2);
-            log.info(this.CONFIG, this.CONFIG.formatter);
+            //log.info(this.CONFIG, this.CONFIG.formatter);
             res = numeral(parseFloat(V)).format(this.CONFIG.formatter);
         }
         return res;

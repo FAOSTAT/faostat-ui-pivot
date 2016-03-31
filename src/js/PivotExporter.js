@@ -113,8 +113,8 @@ define([
 
         _.each($tr, function (tr, trIndex) {
 
-            log.info("-------------");
-            log.info("PIVOTEXPORTER.getMatrix; adding row", tr);
+            //log.info("-------------");
+            //log.info("PIVOTEXPORTER.getMatrix; adding row", tr);
             var $tr = $(tr);
             var $th = $tr.find('th');
 
@@ -131,8 +131,8 @@ define([
 
             });
 
-            log.info("PIVOTEXPORTER.getMatrix; trIndex (row index)", trIndex);
-            log.info("PIVOTEXPORTER.getMatrix; colSpanOffset", colSpanOffset, " (derived from the values already filled in the matrix)");
+            //log.info("PIVOTEXPORTER.getMatrix; trIndex (row index)", trIndex);
+            //log.info("PIVOTEXPORTER.getMatrix; colSpanOffset", colSpanOffset, " (derived from the values already filled in the matrix)");
 
             // default rowSpanOffset (it doesn't depends from previous values in the matrix)
             var rowSpanOffset = 0;
@@ -149,19 +149,19 @@ define([
 
                 for (var colIndex = colSpanOffset; colIndex < colSpanOffset + colSpan; colIndex++) {
                     for (var rowIndex = rowSpanOffset; rowIndex < rowSpanOffset + rowSpan; rowIndex++) {
-                        log.info((trIndex + rowIndex), colIndex, text, colSpan, rowSpan);
+                        //log.info((trIndex + rowIndex), colIndex, text, colSpan, rowSpan);
                         matrix[trIndex + rowIndex][colIndex] = text;
                     }
                 }
 
                 colSpanOffset += colSpan;
 
-
             });
 
             // getting data
             var $td = $tr.find('td');
             _.each($td, function (td) {
+
                 var $v = $(td),
                     // TODO: check if  innerText is always working
                     text = self.sanitizeLabel($v.context.innerText),
@@ -170,7 +170,7 @@ define([
 
                 for (var colIndex = colSpanOffset; colIndex < colSpanOffset + colSpan; colIndex++) {
                     for (var rowIndex = rowSpanOffset; rowIndex < rowSpanOffset + rowSpan; rowIndex++) {
-                        log.info((trIndex + rowIndex), colIndex, text, colSpan, rowSpan);
+                        //log.info((trIndex + rowIndex), colIndex, text, colSpan, rowSpan);
                         matrix[trIndex + rowIndex][colIndex] = text;
                     }
                 }
@@ -189,7 +189,7 @@ define([
         // remove first "-all" row
         matrix.shift();
 
-        log.info("Matrix", matrix);
+        //log.info("Matrix", matrix);
         return matrix;
     };
 
@@ -198,7 +198,6 @@ define([
         return _s.trim(l, "-");
 
     };
-    
 
     PIVOTEXPORTER.prototype.create_model = function () {
 
@@ -315,7 +314,6 @@ define([
         tmp.innerHTML = html;
         return tmp.textContent || tmp.innerText || '';
     };
-
 
     PIVOTEXPORTER.prototype.create_csv_string = function (model) {
 
