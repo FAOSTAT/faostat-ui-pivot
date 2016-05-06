@@ -211,10 +211,11 @@ define(['jquery',
                             selector = $('.' + key);
                             if (selector !== undefined) {
                                 lbl = that.CONFIG.label2code_map[key];
+                                // trimming the flag codes because they are two digits.
+                                // TODO: this should be already performed in the DB.
+                                lbl = _s.trim(lbl);
                                 if (lbl.length > 0) {
-                                    // trimming the flag codes because they are two digits.
-                                    // this shouldbe already performed in the DB.
-                                    selector.html(' [' + _s.trim(lbl) + ']');
+                                    selector.html(' [' + lbl + ']');
                                 }
                             }
                         }
