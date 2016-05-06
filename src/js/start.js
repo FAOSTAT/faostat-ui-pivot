@@ -4,10 +4,11 @@ define(['jquery',
         'handlebars',
         'text!faostat_ui_pivot/html/templates.hbs',
         'underscore',
+        'underscore.string',
         'bootstrap',
         'numeral',
         'amplify',
-        'jbPivot'], function ($, log, Handlebars, templates, _) {
+        'jbPivot'], function ($, log, Handlebars, templates, _, _s) {
 
     'use strict';
 
@@ -211,7 +212,9 @@ define(['jquery',
                             if (selector !== undefined) {
                                 lbl = that.CONFIG.label2code_map[key];
                                 if (lbl.length > 0) {
-                                    selector.html(' [' + lbl + ']');
+                                    // trimming the flag codes because they are two digits.
+                                    // this shouldbe already performed in the DB.
+                                    selector.html(' [' + _s.trim(lbl) + ']');
                                 }
                             }
                         }
