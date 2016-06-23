@@ -27,7 +27,7 @@ define(['jquery',
             show_units: true,
             render: true,
 
-            decimal_places: 2,
+            decimal_places: 6,
             decimal_separator: '.',
             thousand_separator: ','
 
@@ -78,7 +78,7 @@ define(['jquery',
         //log.info('Pivot.start; map_codes_ended');
 
         // Prepare the value formatter.
-        numeral.language('faostat', {
+        numeral.language('pivot', {
             delimiters: {
                 thousands: thousands,
                 decimal: decimal
@@ -86,11 +86,13 @@ define(['jquery',
         });
         this.CONFIG.formatter = '0' + thousands + '0' + decimal;
 
-        numeral.language('faostat');
+        numeral.language('pivot');
 
+        this.CONFIG.formatter += '[';
         for (var i = 0; i < decimal_places; i += 1) {
             this.CONFIG.formatter += '0';
         }
+        this.CONFIG.formatter += ']';
 
         /* Load main structure. */
         source = $(templates).filter('#faostat_ui_pivot_structure').html();
