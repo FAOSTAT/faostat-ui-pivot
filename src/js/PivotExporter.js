@@ -2,13 +2,12 @@
 define([
     'jquery',
     'loglevel',
-    'swal',
     'underscore',
     'underscore.string',
     'config/Events',
     'amplify',
     'FileSaver'
-], function ($, log, swal, _, _s, E) {
+], function ($, log, _, _s, E) {
 
     'use strict';
 
@@ -48,7 +47,9 @@ define([
             },
             success: function (response) {
                 if (window.open(that.CONFIG.url_output + response, '_blank') === undefined) {
-                    swal('Warning', 'Your browser is blocking pop-up windows. Please change your browser settings and try again.', 'warning');
+                    //swal('Warning', 'Your browser is blocking pop-up windows. Please change your browser settings and try again.', 'warning');
+                    log.error('Warning', 'Your browser is blocking pop-up windows. Please change your browser settings and try again.', 'warning');
+                    throw new Error('Warning', 'Your browser is blocking pop-up windows. Please change your browser settings and try again.', 'warning')
                 }
             },
             error: function (e) {
